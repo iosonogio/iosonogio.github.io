@@ -9,9 +9,9 @@ encoding: utf-8
 title: "@iosonogio"
 tagline: Notes on my digital experience
 description: Notes on my digital experience
-url: http://localhost:4000
+url: http://iosonogio.github.io
 baseurl: ""
-urlimg: https://localhost:4000/img/
+urlimg: https://iosonogio.github.io/img/
 
 markdown: kramdown
 kramdown:
