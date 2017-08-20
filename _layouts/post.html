@@ -1,15 +1,68 @@
 ---
 layout: default
 ---
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+{% assign sortedtags = page.tags | sort %}
 
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
-    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}</p>
-  </header>
+<div class="blog-post">
+    <h1 class="blog-post-title">{{ page.title }}</h1>
+    <p class="blog-post-meta small">
+        {{ page.date | date: "%B %d, %Y" }}
+        <span class="blog-post-tags">
+        {% for tag in sortedtags %}{% if forloop.first %}<i class="fa fa-tags" aria-hidden="true"></i>{% endif %} <a href="{{ site.url }}/tags/#{{ tag | cgi_escape }}" title="Pages tagged {{ tag }}" rel="tag">{{ tag }}</a>{% unless forloop.last %} &bull; {% endunless %}{% endfor %}
+        </span>
+    </p>
+    {% if page.show_social == true %}
+        {% include social_buttons.html %}
+    {% endif %}
 
-  <div class="post-content" itemprop="articleBody">
     {{ content }}
-  </div>
 
-</article>
+     <hr>
+
+     <p class="blog-post-meta small">
+         {{ page.date | date: "%B %d, %Y" }}
+         <span class="blog-post-tags">
+         {% for tag in sortedtags %}{% if forloop.first %}<i class="fa fa-tags" aria-hidden="true"></i>{% endif %} <a href="{{ site.url }}/tags/#{{ tag | cgi_escape }}" title="Pages tagged {{ tag }}" rel="tag">{{ tag }}</a>{% unless forloop.last %} &bull; {% endunless %}{% endfor %}
+         </span>
+     </p>
+     {% if page.show_social == true %}
+         {% include social_buttons.html %}
+     {% endif %}
+
+</div><!-- /.blog-post -->
+
+<div class="blog-related">
+    <h2>Related Posts</h2>
+    <ul>
+      {% for post in site.posts %}
+        {% if post.url != page.url %}
+          {% for tag in page.tags %}
+            {% if post.tags contains tag %}
+              <li><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a><br /></li>
+              {% break %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    </ul>
+</div>
+
+<nav class="blog-pagination">
+    {% if page.previous.url %}
+        <a class="btn btn-outline-primary" href="{{ site.url }}{{page.previous.url}}" title="{{ page.previous.title }}">Previous post</a>
+    {% else %}
+        <a class="btn btn-outline-secondary disabled" href="" title="There is no previous post">Previous post</a>
+    {% endif %}
+    {% if page.next.url %}
+        <a class="btn btn-outline-primary" href="{{ site.url }}{{page.next.url}}" title="{{ page.next.title }}">Next post</a>
+    {% else %}
+        <a class="btn btn-outline-secondary disabled" href="" title="There is no next post">Next post</a>
+    {% endif %}
+</nav>
+
+
+<div class="page-break"></div>
+
+{% if site.disqus_shortname and page.comments == true %}
+    <div id="disqus_thread"></div><!-- /#disqus_thread -->
+{% endif %}

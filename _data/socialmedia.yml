@@ -1,0 +1,24 @@
+- name: Twitter
+  url: https://twitter.com/iosonogio
+  class: fa fa-twitter
+  title: "Follow me on Twitter"
+
+# - name: Google Plus
+#   url: https://plus.google.com/+foo
+#   class: fa fa-google-plus
+#   title: "Follow me +foo"
+
+- name: GitHub
+  url: https://github.com/iosonogio
+  class: fa fa-github
+  title: "My code repository"
+
+# - name: Contact
+#   url: "/contact/"
+#   class: fa fa-envelope
+#   title: "Reach Us"
+
+- name: RSS
+  url: "/feed.xml"
+  class: fa fa-rss
+  title: "Subscribe to RSS"

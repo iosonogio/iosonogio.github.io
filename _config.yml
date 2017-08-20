@@ -1,16 +1,54 @@
-# Site settings
-title: We get signal
-email: timido@domain.com
-description: Notes about my digital experience
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://localhost:4000" # the base hostname & protocol for your site
-twitter_username: iosonogio
-github_username:  iosonogio
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink: /:title
+relative_permalinks: false
+encoding: utf-8
 
-# Build settings
+# Setup
+title: "@iosonogio"
+tagline: Notes on my digital experience
+description: Notes on my digital experience
+url: http://localhost:4000
+baseurl: ""
+urlimg: https://localhost:4000/img/
+
 markdown: kramdown
-
 kramdown:
   input: GFM
 
-permalink: /:categories/:title/
+paginate: 3
+paginate_path: "/page:num"
+excerpt_separator: <!--more-->
+default_bg: sitebg.jpg
+default_logo: sitelogo.png
+safe: false
+timezone: Europe/Rome
+future: true
+
+
+## code highlight options
+syntax_highlighter: rouge
+
+gems:
+  - jekyll-paginate
+
+# About/contact
+owner:
+  name: iosonogio
+  url: https://iosonogio.github.io
+  avatar: foo.png
+  #email:
+  twitter: iosonogio
+  linkedin:
+  github:
+  googleplus:
+
+# Google Custom Search:
+#google_search: xyz123abc
+
+# Add disqus username for Disqus comment board:
+disqus_shortname: foo
+
+# Analytics and webmaster tools stuff goes here
+#google_analytics:   xyz123abc

@@ -1,19 +1,22 @@
 ---
 layout: post
-title:  "How To Automatically Keep a Debian Server Up To Date"
-date:   2017-07-25 10:30:00 +0200
+title:  "Keeping a Debian Server Up To Date"
+description: "Automation of software updates on a Debian server"
+date:   2017-07-25
 categories: linux
 tags: sysadmin apt debian
 ---
-### Introduction
+
+This guide covers the automation aspects of software updates on Debian by addressing the following two needs:
+
+- to be notified when installed packages have pending updates available;
+- to have security updates automatically installed as soon as they get available, and hence to be notified of what packages have been upgraded.
+
+<!--more-->
 
 Linux Debian distribution relies on APT as a convenient and easy-to-use packaging system for managing software installations, upgrades and removals.
 
 For a server administrator it would be nice to have some sort of automated process, on top of APT, for keeping a system constantly up to date, expecially with security patches.
-
-This guide covers the automation aspects of software updates by addressing the following two needs:
-- to be notified when installed packages have pending updates available;
-- to have security updates automatically installed as soon as they get available, and hence to be notified of what packages have been upgraded.
 
 ## Prerequisites
 

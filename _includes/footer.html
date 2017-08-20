@@ -1,35 +1,26 @@
-<footer class="site-footer">
 
-    <div class="wrapper">
+<footer class="blog-footer">
+<div class="container">
 
-        <div class="footer-col-wrapper">
-            <div class="footer-col footer-col-1">
-                <ul class="contact-list">
-                    <li>{{ site.title }}</li>
-                </ul>
-            </div>
+    <ul class="list-inline blog-social-icon">
+    {% for social_item in site.data.socialmedia %}
+      {% if social_item.url contains 'http' %}
+          {% assign domain = '' %}
+      {% else %}
+          {% assign domain = site.url %}
+      {% endif %}
+      <li class="list-inline-item">
+          <a class="blog-social-icon" href="{{ domain }}{{ social_item.url }}" rel="me" {% if social_item.url contains 'http' %} target="_blank" {% endif %} title="{{ social_item.title }}">
+              <span class="fa-stack fa-lg" aria-hidden="true">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="{{ social_item.class }} fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="blog-sr-only">{{ social_item.name }}</span>
+          </a>
+      </li>
+    {% endfor %}
+    </ul>
 
-            <div class="footer-col footer-col-2">
-                <ul class="social-media-list">
-                  {% if site.github_username %}
-                  <li>
-                      {% include icon-github.html %}
-                  </li>
-                  {% endif %}
-
-                  {% if site.twitter_username %}
-                  <li>
-                      {% include icon-twitter.html %}
-                  </li>
-                  {% endif %}
-
-                </ul>
-            </div>
-
-            <div class="footer-col footer-col-3">
-                <p>{{ site.description }}</p>
-            </div>
-        </div>
-    </div>
-
+    <p class="small">2017 @iosonogio &bull; <a href="https://opensource.org/licenses/MIT" title="MIT license">MIT license</a></p>
+</div>
 </footer>

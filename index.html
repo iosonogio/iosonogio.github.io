@@ -2,22 +2,36 @@
 layout: default
 ---
 
-<div class="home">
-
-  <h1 class="page-heading"></h1>
-
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+{% for post in paginator.posts %}
+    <div class="blog-post">
+        <h2 class="blog-post-title">
+            <a href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
         </h2>
-      </li>
-    {% endfor %}
-  </ul>
+        <p class="blog-post-meta small">{{ post.date | date: "%B %d, %Y" }}</p>
+        <p>
+            {% if post.description.size > 140 %}
+                {{ post.description | markdownify | remove: '<p>' | remove: '</p>' }}
+            {% else %}
+                {{ post.excerpt | markdownify | remove: '<p>' | remove: '</p>' }}
+            {% endif %}
+            <span class="small"><b><a href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">Read more...</a></b></span>
+        </p>
+    </div><!-- /.blog-post -->
+{% endfor %}
 
-  <br>
-  <p class="rss-subscribe">{% include icon-rss.html %}</p>
-</div>
+<nav class="blog-pagination">
+    {% if paginator.next_page %}
+        <a class="btn btn-outline-primary" href="{{ site.url }}/page{{paginator.next_page}}" title="Older posts">Older posts</a>
+    {% else %}
+        <a class="btn btn-outline-secondary disabled" href="" title="There are no older posts">Older posts</a>
+    {% endif %}
+    {% if paginator.previous_page %}
+        {% if paginator.page == 2 %}
+            <a class="btn btn-outline-primary" href="{{ site.url }}/" title="Newer posts">Newer posts</a>
+        {% else %}
+            <a class="btn btn-outline-primary" href="{{ site.url }}/page{{paginator.previous_page}}" title="Newer posts">Newer posts</a>
+        {% endif %}
+    {% else %}
+        <a class="btn btn-outline-secondary disabled" href="" title="There are no newer posts">Newer posts</a>
+    {% endif %}
+</nav>
