@@ -13,6 +13,8 @@ url: https://iosonogio.github.io
 baseurl: ""
 urlimg: https://iosonogio.github.io/img/
 
+include: ['_pages']
+
 markdown: kramdown
 kramdown:
   input: GFM
