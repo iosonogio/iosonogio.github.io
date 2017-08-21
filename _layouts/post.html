@@ -1,13 +1,13 @@
 ---
 layout: default
 ---
-{% assign sortedtags = page.tags | sort %}
 
 <div class="blog-post">
     <h1 class="blog-post-title">{{ page.title }}</h1>
     <p class="blog-post-meta small">
         {{ page.date | date: "%B %d, %Y" }}
         <span class="blog-post-tags">
+        {% assign sortedtags = page.tags | sort %}
         {% for tag in sortedtags %}{% if forloop.first %}<i class="fa fa-tags" aria-hidden="true"></i>{% endif %} <a href="{{ site.url }}/tags/#{{ tag | cgi_escape }}" title="Pages tagged {{ tag }}" rel="tag">{{ tag }}</a>{% unless forloop.last %} &bull; {% endunless %}{% endfor %}
         </span>
     </p>
