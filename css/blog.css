@@ -61,20 +61,22 @@ img {
 
 table {
     margin: 2rem 0;
-}
-
-table, td, th {
-    border: 1px solid #e5e5e5;
-}
-
-table {
     width: 100%;
     border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 td, th {
-    padding: .25rem .5rem;
+    border: 1px solid #e5e5e5;
+    padding: .5rem;
 }
+
+th {
+    border-bottom: 2px solid #c5c5c5;
+}
+
 
 pre.highlight {
     padding: .75rem .5rem;
