@@ -20,7 +20,7 @@ body {
 /*Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
     html {
-        font-size: 18px;
+        font-size: 16px;
     }
 }
 
@@ -28,14 +28,14 @@ body {
 /*Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) {
     html {
-        font-size: 20px;
+        font-size: 18px;
     }
 }
 
 /*Extra large devices (large desktops, 1200px and up)*/
 @media (min-width: 1200px) {
     html {
-        font-size: 22px;
+        font-size: 20px;
     }
 }
 
@@ -55,6 +55,8 @@ img {
     display: block;
     margin: 2rem 0;
     vertical-align: middle;
+    width: 100%;
+    height: auto;
 }
 
 table {
@@ -150,8 +152,8 @@ a.navbar-brand:focus, a.navbar-brand:hover {
 
 .blog-pagination > .btn {
     border-radius: 1rem;
-    margin: 1rem;
-    width: 10rem;
+    margin: .5rem;
+    width: 8rem;
 }
 
 .blog-post, .blog-page {
