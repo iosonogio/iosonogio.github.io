@@ -11,7 +11,7 @@ layout: default
             {{ post.date | date: "%B %d, %Y" }}
             <span class="blog-post-tags">
             {% assign sortedtags = post.tags | sort %}
-            {% for tag in sortedtags %}{% if forloop.first %}<i class="fa fa-tags" aria-hidden="true"></i>{% endif %} <a href="{{ site.url }}/tags/#{{ tag | cgi_escape }}" title="Pages tagged {{ tag }}" rel="tag">{{ tag }}</a>{% unless forloop.last %} &bull; {% endunless %}{% endfor %}
+            {% for tag in sortedtags %}{% if forloop.first %}<i class="fa fa-tags" aria-hidden="true"></i>{% endif %} <a href="{{ site.url }}/tags#{{ tag | cgi_escape }}" title="Pages tagged {{ tag }}" rel="tag">{{ tag }}</a>{% unless forloop.last %} &bull; {% endunless %}{% endfor %}
             </span>
         </p>
         <p>
