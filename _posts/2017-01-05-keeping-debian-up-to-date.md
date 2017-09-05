@@ -1,10 +1,9 @@
 ---
 layout: post
-title:  "Keeping a Debian Server Up To Date"
-description: "Automation of software updates on a Debian server"
-date:   2017-07-25
-categories: linux
-tags: sysadmin apt debian
+title: "Keeping a Debian Server Up To Date"
+description: "Automating software updates on a Debian server"
+date: 2017-01-05
+tags: linux
 ---
 
 This guide covers the automation aspects of software updates on Debian by addressing the following two needs:
