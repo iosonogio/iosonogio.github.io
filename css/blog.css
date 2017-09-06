@@ -77,6 +77,14 @@ th {
     border-bottom: 2px solid #c5c5c5;
 }
 
+dt {
+    margin-bottom: .5rem;
+}
+
+dd {
+    margin-left: .5rem;
+}
+
 
 pre.highlight {
     padding: .75rem .5rem;
