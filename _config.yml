@@ -19,7 +19,7 @@ markdown: kramdown
 kramdown:
   input: GFM
 
-paginate: 3
+paginate: 10
 paginate_path: "/page:num"
 excerpt_separator: <!--more-->
 default_bg: sitebg.jpg
