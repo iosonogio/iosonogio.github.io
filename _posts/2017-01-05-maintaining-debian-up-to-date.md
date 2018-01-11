@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Keeping a Debian Server Up To Date"
-description: "Automating software updates on a Debian server"
+title: "Maintaining Debian Up To Date"
+description: "Automating software updates on a Linux Debian box"
 date: 2017-01-05
 tags: linux
 ---
