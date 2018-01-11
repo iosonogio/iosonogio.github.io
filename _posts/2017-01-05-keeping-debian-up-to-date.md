@@ -6,10 +6,10 @@ date: 2017-01-05
 tags: linux
 ---
 
-This guide covers the automation aspects of software updates on Debian by addressing the following two needs:
+This guide covers the automation aspects of software updates on Linux Debian by addressing the following two needs:
 
-- to be notified when installed packages have pending updates available;
-- to have security updates automatically installed as soon as they get available, and hence to be notified of what packages have been upgraded.
+- being notified when installed packages have pending updates available;
+- having security updates automatically installed as soon as they get available, and hence to be notified of what packages have been upgraded.
 
 <!--more-->
 
@@ -33,21 +33,20 @@ In order to display these details whenever an upgrade is to be executed, we can 
 
 To install `apt-listchanges` just run:
 
-```super_user
-apt-get install apt-listchanges
+```
+# apt-get install apt-listchanges
 ```
 By the way, this package should already be present on a fresh Debian 8.6 installation.
 
 The configuration file is `/etc/apt/listchanges.conf`. The package can be configured by manually editing that file or by running the command:
 
-```super_user
-dpkg-reconfigure apt-listchanges
+```
+# dpkg-reconfigure apt-listchanges
 ```
 
 The configuration options are described in the man page. A common configuration setup could be the following:
 
 ```
-[label /etc/apt/listchanges.conf]
 [apt]
 frontend=pager
 email_address=root
@@ -57,7 +56,7 @@ which=news
 
 The `frontend` option selects how information shall be displayed to the user (the `pager` value essentially means that the tool `less` will be used). The `email_address` option specifies the recipient we want the information be mailed to in case we choose the `mail` frontend. The `confirm` option determines whether a confirmation dialog is presented to the user after the information has been displayed and before proceeding with the upgrade. The `which` option selects which source of information among `changelogs`, `news` or `both` shall be displayed.
 
-##Being Notified of Pending Updates
+## Being Notified of Pending Updates
 
 Next step, we want to be notified when installed packages have pending updates available. We can use the tool `apticron` for this job. Quoting from the Debian Handbook, `apticron` runs a script daily (via cron) which updates the list of available packages, and, if some installed packages are not in the latest available version, it downloads them and sends an email with the list of these packages along with the changes that have been made in the new versions.
 
@@ -65,8 +64,8 @@ Note that `apticron` needs the packages `apt-listchanges` (described above) in o
 
 Let’s proceed with installing `apticron`, it's this simple:
 
-```super_user
-apt-get install apticron
+```
+# apt-get install apticron
 ```
 
 During the process, the new cron task `/etc/cron.d/apticron` gets installed. Note that this is independent of the main APT cron task `/etc/cron.daily/apt`.
@@ -74,7 +73,6 @@ During the process, the new cron task `/etc/cron.d/apticron` gets installed. Not
 The relevant configuration file is `/etc/apticron/apticron.conf` which is fully commented. The default configuration should work fine in most situations, so we’ll just make sure that a valid email address is set:
 
 ```
-[label /etc/apticron/apticron.conf]
 EMAIL="root"
 ...
 ```
@@ -82,7 +80,6 @@ EMAIL="root"
 The following is an example of an email that we would receive from `apticron`:
 
 ```
-[label An email sample from apticron]
 apticron report [Mon, 09 Jan 2017 10:10:08 +0100]
 ========================================================================
 apticron has detected that some packages need upgrading on:
@@ -113,23 +110,22 @@ as root on droptest
 apticron
 ```
 
-##Upgrading Automatically
+## Upgrading Automatically
 
 As our final step, we want that packages be automatically upgraded as soon as updates are available. To this aim, we are going to use the tool `unattended-upgrade`, included in the package named `unattended-upgrades`. We can install it by running:
 
-```super_user
-apt-get install unattended-upgrades
+```
+# apt-get install unattended-upgrades
 ```
 By the way, this package should already be present on a fresh Debian 8.6 installation.
 
-###Configuring Unattended Upgrades
+### Configuring Unattended Upgrades
 
 The configuration file `/etc/apt/apt.conf.d/50unattended-upgrades` is fully commented. Let's see some of the relevant options.
 
 The `Origins-Pattern` block controls which packages will be automatically upgraded. Since automatic unattended updates may be disruptive on a production server, we will limit them to security updates only. So let’s make sure that the line with the label `Debian-Security` in the `Origins-Pattern` block is _not_ commented out (it shouldn’t be by default):
 
 ```
-[label /etc/apt/apt.conf.d/50unattended-upgrades]
 Unattended-Upgrade::Origins-Pattern {
     // …
     "origin=Debian,codename=${distro_codename},label=<^>Debian-Security<^>";
@@ -143,34 +139,32 @@ If we want to blacklist some packages that shall be excluded from unattended upg
 In order to receive emails, let’s make sure to uncomment this line and set a valid email address:
 
 ```
-[label /etc/apt/apt.conf.d/50unattended-upgrades]
 Unattended-Upgrade::Mail "root";
 ```
 
 We may want that unused dependencies be automatically removed after an upgrade, so let’s uncomment this line and set its value to `true`:
 
 ```
-[label /etc/apt/apt.conf.d/50unattended-upgrades]
 Unattended-Upgrade::Remove-Unused-Dependencies "true";
 ```
 
 Lastly, `unattended-upgrade` is capable of automatically rebooting the system after an upgrade. This functionality is configured by the options `Automatic-Reboot` and `Automatic-Reboot-Time`. We should be careful to enable this functionality on a production server.
 
-###Simulating execution
+### Simulating execution
 
 After we have installed and configured `unattended-upgrades`, we can simulate its execution by running this command:
 
-```super_user
-unattended-upgrade --dry-run --debug
+```
+# unattended-upgrade --dry-run --debug
 ```
 
 The output of the command will show the allowed origins for unattended upgrades as set in the `Origins-Pattern`’s block. We can check them against the APT sources configured on our system by running:
 
-```super_user
-apt-cache policy
+```
+# apt-cache policy
 ```
 
-###Activating Unattended Upgrades
+### Activating Unattended Upgrades
 
 The installation process of `unattended-upgrades` does _not_ automatically enable the unattended upgrade functionality. To activate it, we need to properly configure `apt`. In fact, it is the apt cron task `/etc/cron.daily/apt` (that already comes with the `apt` package) that takes care of running `unattended-upgrade` accordingly to the proper configuration options.
 
@@ -178,14 +172,13 @@ Such options can be set in any file in `/etc/apt/apt.conf.d/`, since all files i
 
 Conventionally, the options required to activate `unattended-upgrade` shall be placed in the file `/etc/apt/apt.conf.d/20auto-upgrades`. This file can be created manually by copying from `/usr/share/unattended-upgrades/20auto-upgrades` (recommended) or semi-automatically by running the command:
 
-```super_user
-dpkg-reconfigure -plow unattended-upgrades
+```
+# dpkg-reconfigure -plow unattended-upgrades
 ```
 
 The `20auto-upgrades` configuration file should contain (at least) the following two lines:
 
 ```
-[label /etc/apt/apt.conf.d/20auto-upgrades]
 APT::Periodic::Update-Package-Lists "1";
 APT::Periodic::Unattended-Upgrade "1";
 ```
@@ -193,11 +186,9 @@ APT::Periodic::Unattended-Upgrade "1";
 The `Update-Package-Lists` option specifies the frequency (in days) at which the packages lists are refreshed. By setting it to **1** the packages lists will be updated at each run. By the way, this option does _not_ affect the behaviour of `apticron` which takes care of updating packages lists by itself.
 The `Unattended-Upgrade` option will activate the `unattended-upgrade` functionality.
 
-
 The following is an example of an email that we would receive from `unattended-upgrade`:
 
 ```
-[label A sample email from unattended upgrade]
 Unattended upgrade returned: True
 
 Packages that were upgraded:
@@ -214,8 +205,7 @@ Writing dpkg log to '/var/log/unattended-upgrades/unattended-upgrades-dpkg.log'
 All upgrades installed
 ```
 
-
-##Some more useful APT configuration options
+## Some more useful APT configuration options
 
 Quoting from the Debian Handbook, this chapter describes some additional `APT::Periodic` configuration options used in the `/etc/cron.daily/apt` script that could be useful to us.
 
@@ -226,5 +216,5 @@ Configuration Option  | Description
 `APT::Periodic::Verbose` | When set to (at least) **2**, the apt cron task `/etc/cron.daily/apt` will send us an email with details about its run. We could set this option in our custom configuration file `/etc/apt/apt.conf.d/99custom`.
 `APT::Periodic::Enable` | This enables (when set to **1**) or disables (when set to **0**) the execution of the apt daily task `/etc/cron.daily/apt`. The default value is **1** so there is no need to explicitely set this option.
 
-##Conclusions
+## Conclusions
 In this tutorial we have covered how to set up an automated process for keeping a Debian system up to date. We installed and configured: `apt-listchanges` in order to know what has changed in the new packages versions; `apticron` in order to be notified when new versions of installed packages are available; and `unattended-upgrades` to automatically install packages updates.
