@@ -173,7 +173,7 @@ Following the lines down we see that a `WebClient` object is created (I renamed 
 
 Note that the loop is executed only one time because of the `break` instruction and regardless of how many `$urls` are returned from the `Split` operation. Indeed the `Split` and all those other random strings assignments spread over are just garbage to make the code more difficult to read and reverse.
 
-I tried to download the second stage using [Malzilla](http://malzilla.sourceforge.net/) but unfortunately without success: at this time the domain is dead or it's already been taken down.
+I tried to download the second stage using [Malzilla](http://malzilla.sourceforge.net/) but unfortunately without success: at this time the domain is dead or it's already been taken down. The following screenshot is from Virus Tracker:
 
 ![virustracker](/media/20180205/virustracker.png)
 
