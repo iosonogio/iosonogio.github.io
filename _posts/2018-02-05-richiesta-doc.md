@@ -18,9 +18,9 @@ As we will see it acts as a _downloader_ that once executed reaches out to the I
 
 The sample is named `Richiesta.doc` and its SHA256 hash is `586b7dbe2a700e50a9dda9a9e12bd985e54dc5b1b7a77a61450d638358133d3f`.
 
-It is reported as malicious on VirusTotal (and other online sandboxes), and it's worth noting that there are many different malicious samples of `Richiesta.doc` each one with a different hash.
+It is reported as malicious by VirusTotal (and other online sandboxes), and it's worth noting that there are many different malicious samples of `Richiesta.doc` in th wild each one with a different hash.
 
-First step is playing with the sample on my REMnux lab virtual machine.
+I will start playing with the sample on my REMnux lab virtual machine.
 
 Examining the file with the `file` utility confirms it is a Microsoft Word document:
 
