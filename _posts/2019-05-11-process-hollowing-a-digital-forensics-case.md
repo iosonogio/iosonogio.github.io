@@ -14,7 +14,7 @@ In this post I describe how we can analyze a system infected with a malware that
 
 # Examining a live system
 
-Let's pretend to be in front of the live infected system. 
+Let's pretend to be in front of the live infected system.
 
 ## Inspecting the running processes
 
@@ -196,7 +196,7 @@ _Figure 12. Dumped svchost.exe processes_
 
 A powerful technique to identify _almost identical_ files, is **fuzzy hashing** also known as [Context Triggered Piecewise Hashes (CTPH)](http://dfrws.org/2006/proceedings/12-Kornblum.pdf).
 
-> A common application of fuzzy hashing is to identify unknown variations of the same malware executable. Even though several samples may be different on a byte-by-byte basis (their hashes are different), their source code may be almost identical (their fuzzy hashes are the same!).
+> In the malware analysis world, fuzzy hashing is commonly used to identify unknown variations of the same malware executable. Even though several samples may be different on a byte-by-byte basis (their hashes are different), their source code may be almost identical (their fuzzy hashes are the same!).
 
 Here, we will use fuzzy hashing to detect the malicious `svchost.exe` image among those "almost identical" images of legit `svchost.exe` processes.
 
